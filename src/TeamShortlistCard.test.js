@@ -1,6 +1,6 @@
 import wrap from "jest-wrap";
 import React from "react";
-import Enzyme, { mount } from "enzyme";
+import Enzyme, { mount, shallow } from "enzyme";
 import TeamShortlistCard from "./TeamShortlistCard";
 import Adapter from "enzyme-adapter-react-16";
 
@@ -85,6 +85,19 @@ wrap()
     .withGlobal("YJ", () => mockYJ)
     .withGlobal("window", () => mockWindow)
     .describe("<TeamShortlistCard (mocked YJ and window) />", () => {
+
+        test("(shallow) Ensure onChange is triggered through Modal props", () => {
+            // Shallow for comparison
+            const shallowComponent = shallow(
+                <TeamShortlistCard {...defaultProps} isBy={true} />
+            );
+    
+            expect(shallowComponent.state("feedbackValue")).toBe("");
+    
+            // Find textarea field in modal
+            expect(shallowComponent.find(".FreelancerCard-newDetails").text()).toBe("NameCreative director and Copywriter");
+        });
+
         test("Ensure onChange is triggered through Modal props", () => {
             const mountedComponent = mount(
                 <TeamShortlistCard {...defaultProps} isBy={true} />
